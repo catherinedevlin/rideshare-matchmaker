@@ -13,5 +13,10 @@ employees.
 Using the project's issue tracker to think through and 
 discuss technical and legal obstacles.
 
+Implement with PostGIS and pgRouting.  Run as a web app
+and webservice with API.  Also let event organizers run
+on their own hardware, but only tech-savvy organizers will
+be able to do that, so webservice is key.
+
 For pity's sake, PLEASE steal this idea and implement it.
 The environment needs it.
