@@ -1,0 +1,15 @@
+{% load staticfiles %}
+
+<html>
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static "riders/wds/css/lib/uswds.min.css" %}">
+  </head>
+  <body>
+  <div id="main" class="main-content" role="main">
+    {% block content %}
+    {% endblock %}
+  </div>
+    <script src="{% static "riders/wds/js/lib/uswds.min.js" %}></script>
+  </body>
+</html>
