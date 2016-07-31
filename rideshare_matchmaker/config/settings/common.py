@@ -46,6 +46,7 @@ LOCAL_APPS = (
     # custom users app
     'rideshare_matchmaker.users.apps.UsersConfig',
     # Your stuff: custom apps go here
+    'traveller',
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
