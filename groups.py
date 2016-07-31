@@ -1,6 +1,5 @@
 from geopy.distance import vincenty
 from traveler import Traveler
-import pdb
 
 def make_groups(destination, travelers):
     carpool_groups = {}
@@ -15,7 +14,7 @@ def get_nearby_travelers(traveler, travelers):
 
 def carpool_match(traveler1, traveler2):
     if traveler1 is traveler2: return False
-    distance = vincenty(traveler1.point(), traveler2.point())
+    distance = vincenty(traveler1.geolocation, traveler2.geolocation)
     return distance.miles < acceptable_miles_away()
 
 def acceptable_miles_away():
