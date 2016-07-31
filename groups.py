@@ -1,24 +1,33 @@
 from geopy.distance import vincenty
 from traveler import Traveler
 
-def make_groups(destination, travelers):
-    carpool_groups = {}
+class CarpoolMatcher:
+    def __init__(self, destination, travelers, min_distance = 1, relative_distance_percent = .10):
+        self.destination = destination
+        self.travelers = travelers
+        self.min_distance = min_distance
+        self.relative_distance_percent = relative_distance_percent
 
-    for traveler in travelers:
-        carpool_groups[traveler] = get_nearby_travelers(traveler, travelers)
+    def make_groups(self):
+        carpool_groups = {}
 
-    return carpool_groups
+        for traveler in self.travelers:
+            carpool_groups[traveler] = self.get_nearby_travelers(traveler)
 
-def get_nearby_travelers(traveler, travelers):
-    return [traveler2 for traveler2 in travelers if carpool_match(traveler, traveler2)]
+        return carpool_groups
 
-def carpool_match(traveler1, traveler2):
-    if traveler1 is traveler2: return False
-    distance = vincenty(traveler1.geolocation, traveler2.geolocation)
-    return distance.miles < acceptable_miles_away()
+    def get_nearby_travelers(self, traveler):
+        return [traveler2 for traveler2 in self.travelers if self.carpool_match(traveler, traveler2)]
 
-def acceptable_miles_away():
-    return 10 # placeholder because later this might be complicated
+    def carpool_match(self, traveler1, traveler2): 
+        if traveler1 is traveler2: return False
+        distance = vincenty(traveler1.geolocation, traveler2.geolocation)
+        return distance.miles < self.acceptable_miles_away(traveler1)
+
+    def acceptable_miles_away(self, traveler):
+        traveler_to_destination_distance = vincenty(traveler.geolocation, self.destination).miles
+        return max(self.min_distance, self.relative_distance_percent * traveler_to_destination_distance)
+
 
 if __name__ == '__main__':
     ohio_union = (39.997794, -83.008511)
@@ -31,7 +40,8 @@ if __name__ == '__main__':
     test_travelers = [adam_from_france, face_from_columbus, dave_from_columbus,
                       bill_from_des_moines, susy_from_des_moines]
 
-    carpool_groups = make_groups(ohio_union, test_travelers)
+    matcher = CarpoolMatcher(ohio_union, test_travelers)
+    carpool_groups = matcher.make_groups()
     
     assert carpool_groups[adam_from_france] == []
     assert carpool_groups[face_from_columbus] == [dave_from_columbus]
