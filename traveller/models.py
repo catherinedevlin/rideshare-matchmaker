@@ -16,8 +16,8 @@ class Location(models.Model):
         (self.latitude, self.longitude) = (point.latitude, point.longitude)
 
 
-ohio_union = Location(postal_code='43210')
-ohio_union.save()
+# ohio_union = Location(postal_code='43210')
+# ohio_union.save()
 
 
 class Destination(models.Model):
@@ -27,14 +27,14 @@ class Destination(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
-pyohio = Destination(name='PyOhio', location=ohio_union, date=date.today())
-pyohio.save()
+# pyohio = Destination(name='PyOhio', location=ohio_union, date=date.today())
+# pyohio.save()
 
 
 class Upload(models.Model):
     source_file = models.FileField(upload_to='documents/%Y/%m/%d')
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    location = models.ForeignKey(Destination, default=pyohio)
+    location = models.ForeignKey(Destination) # , default=pyohio)
 
     class Meta:
         ordering = ['uploaded_at']
